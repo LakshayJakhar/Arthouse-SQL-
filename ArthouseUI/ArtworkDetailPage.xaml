@@ -1,0 +1,104 @@
+﻿<Page
+    x:Class="ArthouseUI.ArtworkDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ArthouseUI"
+    xmlns:data="using:ArthouseRepository.Models"
+    xmlns:converters="using:ArthouseUI.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <converters:DateTimeToOffsetConverter x:Key="DateTimeToOffsetConverter"/>
+        <converters:CurrencyToStringConverter x:Key="CurrencyToStringConverter"/>
+    </Page.Resources>
+
+    <ScrollViewer>
+        <Grid x:Name="LayoutRoot">
+            <Grid.Background>
+                <ImageBrush Stretch="UniformToFill" ImageSource="Assets/Mona_Lisa.jpg" Opacity="0.2"/>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!--TitlePanel contains the name of the application and page title-->
+            <StackPanel Grid.Row="0" Margin="0,12,0,6">
+                <TextBlock Text="Arthouse Application" FontSize="30" Margin="12,0,0,0"/>
+                <TextBlock x:Name="txtPageTitle" Text="{x:Bind view.Summary }" FontSize="20" Margin="13,3,0,3" />
+                <Rectangle Fill="#FFF4F4F5" Height="1" Stroke="Black" HorizontalAlignment="Stretch" Margin="0,2,0,2"/>
+            </StackPanel>
+
+            <!--ContentPanel - place additional content here-->
+            <Grid Name="artworkDisplayGrid" Grid.Row="1" Margin="10,0,10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--Title-->
+                <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="3,0,0,0"
+                           VerticalAlignment="Center" Name="titleTextBlock" Text="Title" />
+                <TextBox Grid.Row="0" Grid.Column="1" Height="30" Name="titleTextBox" 
+                         MaxLength="30" InputScope="Text" Text="{x:Bind view.Title,Mode=TwoWay}" AcceptsReturn="False" />
+
+                <!--Artist-->
+                <TextBlock Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Left"  Margin="3,0,6,0"
+                           VerticalAlignment="Center"  Name="artistTextBlock" Text="Artist" />
+                <ComboBox x:Name="ArtistCombo" Grid.Column="1" Grid.Row="1" 
+                          HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                          SelectedValuePath="ID"  DisplayMemberPath="DisplayText" 
+                          SelectedValue="{Binding ArtistID, Mode=TwoWay}"   />
+
+                <!--ArtType-->
+                <TextBlock Grid.Row="2" Grid.Column="0"  HorizontalAlignment="Left"  Margin="3,0,6,0"
+                           VerticalAlignment="Center"  Name="artTypeTextBlock" Text="Type of Art" />
+                <ComboBox x:Name="ArtTypeCombo" Grid.Column="1" Grid.Row="2" 
+                          HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                          SelectedValuePath="ID"  DisplayMemberPath="DisplayText" 
+                          SelectedValue="{Binding ArtTypeID, Mode=TwoWay}"   />
+
+                <!--Value-->
+                <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" Margin="3,0,6,0"
+                           VerticalAlignment="Center" Name="valueBlock" Text="Value  " />
+                <TextBox Grid.Row="3" Grid.Column="1" Height="30"  Name="valueTextBox"  
+                         Text="{x:Bind  view.Value, Converter={StaticResource CurrencyToStringConverter}, Mode=TwoWay}" AcceptsReturn="False" InputScope="Number" />
+
+                <!--Description-->
+                <TextBlock Grid.Row="4" Grid.Column="0"  HorizontalAlignment="Left"  Margin="3,0,6,20"
+                           VerticalAlignment="Center"  Name="descriptionTextBlock" Text="Description" />
+                <TextBox Grid.Row="4" Grid.Column="1"  HorizontalAlignment="Left"  Margin="3,0,6,20"
+                           VerticalAlignment="Center"  AcceptsReturn="True" TextWrapping="Wrap"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                               Name="descriptionTextBox" Text="{x:Bind view.Description,Mode=TwoWay}" />
+
+                <!--DateFinished-->
+                <CalendarDatePicker Header="Date Finished" Grid.Column="1" Grid.Row="5"  
+                            Date="{x:Bind view.DateFinished, Converter={StaticResource DateTimeToOffsetConverter}, Mode=TwoWay}"
+                            HorizontalAlignment="Left" VerticalAlignment="Top"  />
+
+                <RelativePanel Grid.Row="7" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Button x:Name="btnDelete" Content="Delete" RelativePanel.LeftOf="btnSave"
+                        Click="btnDelete_Click" Margin="6,6,0,6" />
+                    <Button x:Name="btnSave" Content="Save" RelativePanel.AlignHorizontalCenterWithPanel="True"
+                        Click="btnSave_Click" Margin="6,6,6,6" />
+                    <Button x:Name="btnCancel" Content="Cancel" RelativePanel.RightOf="btnSave"
+                        Click="btnCancel_Click" Margin="0,6,6,6" />
+                </RelativePanel>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+
+</Page>
